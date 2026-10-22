@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#cfe8f5">
+  <title>Up or Down</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <div id="hud" class="layer" hidden>
+    <div id="score">0</div>
+    <button class="icon-btn pause-btn" data-act="pause" aria-label="Pause"><span></span><span></span></button>
+  </div>
+
+  <div id="countdown" class="layer" hidden><div id="countdown-num"></div></div>
+
+  <section id="menu" class="screen menu" hidden>
+    <button id="btn-mode" class="mode-toggle" data-act="mode" data-mode="plane" aria-label="Switch game mode">
+      <span class="seg" data-seg="plane">✈️</span><span class="seg" data-seg="wheel">🛞</span>
+    </button>
+    <h1 class="logo">Up or Down</h1>
+    <p id="mode-name" class="mode-name"></p>
+    <div id="char-picker" class="char-picker" hidden>
+      <button class="arrow" data-act="char-prev" aria-label="Previous character">‹</button>
+      <span id="char-name"></span>
+      <button class="arrow" data-act="char-next" aria-label="Next character">›</button>
+    </div>
+    <div class="stack">
+      <button class="btn primary" data-act="play">PLAY</button>
+      <button class="btn" data-act="howto">HOW TO PLAY</button>
+      <button class="btn" data-act="scores">HIGH SCORES</button>
+      <button class="btn" data-act="sound" data-sound="label">SOUND: ON</button>
+      <button id="btn-install" class="btn" data-act="install" hidden>INSTALL</button>
+    </div>
+    <button id="ios-hint" class="hint" data-act="hint" hidden>Tap Share, then Add to Home Screen ✕</button>
+    <footer>v0.1 · KPP Studio</footer>
+  </section>
+
+  <section id="howto" class="screen dim" hidden>
+    <div class="card">
+      <h2>How to Play</h2>
+      <div data-for="plane">
+        <div class="tip"><div class="glyph">↑</div><p><b>Swipe UP</b> to fly over things on the floor.</p></div>
+        <div class="tip"><div class="glyph">↓</div><p><b>Swipe DOWN</b> to fly under things hanging from the ceiling.</p></div>
+        <div class="tip"><div class="glyph">↔</div><p><b>Swipe LEFT or RIGHT</b> to dodge tall things that fill a lane.</p></div>
+        <div class="tip"><div class="glyph">✕</div><p><b>Pick wrong and you crash!</b> Clear as many as you can.</p></div>
+      </div>
+      <div data-for="wheel">
+        <div class="tip"><div class="glyph">↑</div><p><b>Swipe UP</b> to jump over things on the ground.</p></div>
+        <div class="tip"><div class="glyph">↓</div><p><b>Swipe DOWN</b> to duck under low branches and signs.</p></div>
+        <div class="tip"><div class="glyph">↔</div><p><b>Swipe LEFT or RIGHT</b> to switch lanes around cars, boulders and trees.</p></div>
+        <div class="tip"><div class="glyph">✕</div><p><b>Hit one and you wipe out!</b> Go as far as you can.</p></div>
+      </div>
+    </div>
+    <button class="btn primary" data-act="gotit">GOT IT</button>
+  </section>
+
+  <section id="scores" class="screen dim" hidden>
+    <div class="card">
+      <h2>High Scores</h2>
+      <ol id="score-list"></ol>
+    </div>
+    <button class="btn" data-act="clear">CLEAR SCORES</button>
+    <button class="btn primary" data-act="home">BACK</button>
+  </section>
+
+  <section id="pause" class="screen dim" hidden>
+    <h2 class="headline">PAUSED</h2>
+    <div class="stack">
+      <button class="btn primary" data-act="resume">RESUME</button>
+      <button class="btn" data-act="restart">RESTART</button>
+      <button class="btn" data-act="menu">MAIN MENU</button>
+      <button class="btn" data-act="sound" data-sound="label">SOUND: ON</button>
+    </div>
+  </section>
+
+  <section id="gameover" class="screen dim" hidden>
+    <button class="icon-btn sound-btn" data-act="sound" data-sound="icon" aria-label="Toggle sound">🔊</button>
+    <h2 id="go-title" class="headline crash">CRASH!</h2>
+    <div id="go-score" class="big-score">0</div>
+    <p id="go-best" class="best">Best: 0</p>
+    <p id="go-new" class="new-high" hidden>NEW HIGH SCORE!</p>
+    <div class="stack">
+      <button class="btn primary big" data-act="again">PLAY AGAIN</button>
+      <button class="btn" data-act="menu">MAIN MENU</button>
+    </div>
+  </section>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
