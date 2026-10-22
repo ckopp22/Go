@@ -1,5 +1,5 @@
 // Bump CACHE_VERSION on every release so players get the update.
-const CACHE_VERSION = 'up-or-down-v3';
+const CACHE_VERSION = 'up-or-down-v4';
 const ASSETS = [
   './',
   './index.html',
