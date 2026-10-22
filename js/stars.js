@@ -1,7 +1,7 @@
 import * as THREE from './lib/three.module.min.js';
 
-const POOL = 18;
-const SPIN = 2.5;
+const POOL = 40;
+const SPIN = 4; // coin-style spin around the vertical axis
 
 function starShape(outer, inner) {
   const shape = new THREE.Shape();
@@ -33,9 +33,9 @@ function glowTexture() {
 // Pooled glowing collectible stars. They scroll with the world; the game decides what collects them.
 export class Stars {
   constructor(scene) {
-    const geo = new THREE.ExtrudeGeometry(starShape(0.3, 0.13), { depth: 0.08, bevelEnabled: false });
+    const geo = new THREE.ExtrudeGeometry(starShape(0.17, 0.075), { depth: 0.05, bevelEnabled: true, bevelThickness: 0.015, bevelSize: 0.012, bevelSegments: 1 });
     geo.center();
-    const mat = new THREE.MeshBasicMaterial({ color: 0xffe066 });
+    const mat = new THREE.MeshLambertMaterial({ color: 0xffd23f, emissive: 0xb07d00 });
     const glow = new THREE.SpriteMaterial({
       map: glowTexture(),
       blending: THREE.AdditiveBlending,
@@ -50,7 +50,7 @@ export class Stars {
       const g = new THREE.Group();
       g.userData.mesh = new THREE.Mesh(geo, mat);
       const halo = new THREE.Sprite(glow);
-      halo.scale.set(1.3, 1.3, 1);
+      halo.scale.set(0.8, 0.8, 1);
       g.add(g.userData.mesh, halo);
       g.userData.halo = halo;
       g.visible = false;
@@ -84,8 +84,8 @@ export class Stars {
       const s = this.active[i];
       s.position.z += scroll * dt;
       s.userData.mesh.rotation.y += SPIN * dt;
-      s.position.y = s.userData.baseY + Math.sin(this.time * 3 + s.userData.phase) * 0.08;
-      const pulse = 1.3 + Math.sin(this.time * 5 + s.userData.phase) * 0.15;
+      s.position.y = s.userData.baseY + Math.sin(this.time * 3 + s.userData.phase) * 0.03;
+      const pulse = 0.8 + Math.sin(this.time * 5 + s.userData.phase) * 0.08;
       s.userData.halo.scale.set(pulse, pulse, 1);
       if ((collect && collect(s)) || s.position.z > 8) {
         s.visible = false;

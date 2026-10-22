@@ -115,7 +115,7 @@ button { font-family: inherit; touch-action: manipulation; cursor: pointer; }
 .big-score { font-size: 96px; font-weight: 900; line-height: 1; text-shadow: 0 4px 0 var(--teal); }
 .best { margin: 0; font-size: 22px; font-weight: 700; }
 .new-high { margin: 0; font-size: 22px; font-weight: 900; color: #ffd23f; }
-footer { position: absolute; bottom: calc(var(--safe-bottom) + 12px); font-size: 13px; opacity: 0.85; }
+footer { position: absolute; left: 0; right: 0; bottom: calc(var(--safe-bottom) + 12px); text-align: center; font-size: 14px; font-weight: 700; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
 
 /* HUD */
 #score {

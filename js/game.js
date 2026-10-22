@@ -25,6 +25,7 @@ export class Game {
     this.pool = new ObstaclePool(scene);
     this.stars = new Stars(scene);
     this.starYs = [0.9, 3.1]; // heights stars can appear at (set per mode)
+    this.starArc = false; // raised star lines curve like a jump arc
     this.active = [];
     this.onScore = null;
     this.onStar = null;
@@ -39,6 +40,7 @@ export class Game {
     this.pool.setTheme(cfg.world);
     this.minSpacing = cfg.minSpacing ?? MIN_SPACING;
     this.starYs = cfg.starYs;
+    this.starArc = !!cfg.starArc;
   }
 
   // Removes every obstacle from the hallway.
@@ -118,12 +120,19 @@ export class Game {
     this.spawnStars(z - this.nextGap / 2);
   }
 
-  // A short line of stars in one lane, halfway to the next wave.
+  // A coin-style line of stars in one lane, halfway to the next wave. High lines become a jump arc.
   spawnStars(zMid) {
     if (Math.random() > 0.7) return;
+    const n = 5;
+    // Wide apart, and wider at speed, but never so wide the line reaches the obstacles on either side.
+    const spacing = Math.min(Math.max(2.5, this.speed * 0.15), (this.nextGap - 4) / (n - 1));
     const x = COL_X[(Math.random() * 3) | 0];
     const y = this.starYs[(Math.random() * this.starYs.length) | 0];
-    for (let k = -1; k <= 1; k++) this.stars.spawn(x, y, zMid + k * 1.4);
+    const arc = this.starArc && y > 1.3;
+    for (let k = 0; k < n; k++) {
+      const h = arc ? 0.9 + (y - 0.9) * Math.sin((Math.PI * (k + 0.5)) / n) : y;
+      this.stars.spawn(x, h, zMid + (k - (n - 1) / 2) * spacing);
+    }
   }
 
   // Is the star close enough to the hero to be picked up?
