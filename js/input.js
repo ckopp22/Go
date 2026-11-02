@@ -6,6 +6,7 @@ export function createInput(onMove) {
   let startX = 0;
   let startY = 0;
   let touchId = null;
+  let fired = false;
 
   const onButton = (e) => e.target.closest && e.target.closest('button');
   const find = (e) => {
@@ -19,6 +20,7 @@ export function createInput(onMove) {
     if (touchId !== null) return;
     const t = e.changedTouches[0];
     touchId = t.identifier;
+    fired = false;
     startX = t.clientX;
     startY = t.clientY;
   }, { passive: false });
@@ -32,10 +34,9 @@ export function createInput(onMove) {
     const dy = t.clientY - startY;
     const ax = Math.abs(dx);
     const ay = Math.abs(dy);
-    if (Math.max(ax, ay) < SWIPE_PX) return;
+    if (fired || Math.max(ax, ay) < SWIPE_PX) return;
+    fired = true;
     onMove(ay >= ax ? (dy < 0 ? 'up' : 'down') : (dx < 0 ? 'left' : 'right'));
-    startX = t.clientX;
-    startY = t.clientY;
   }, { passive: false });
 
   const end = (e) => {
